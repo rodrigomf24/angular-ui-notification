@@ -11,6 +11,7 @@ angular.module('ui-notification').provider('Notification', function() {
         positionX: 'right',
         positionY: 'top',
         replaceMessage: false,
+        delegateRemove: false,
         templateUrl: 'angular-ui-notification.html'
     };
 
@@ -45,6 +46,7 @@ angular.module('ui-notification').provider('Notification', function() {
             args.positionY = args.positionY ? args.positionY : options.positionY;
             args.positionX = args.positionX ? args.positionX : options.positionX;
             args.replaceMessage = args.replaceMessage ? args.replaceMessage : options.replaceMessage;
+            args.delegateRemove = args.delegateRemove ? args.delegateRemove : options.delegateRemove;
 
             $http.get(args.template,{cache: $templateCache}).success(function(template) {
 
@@ -53,6 +55,7 @@ angular.module('ui-notification').provider('Notification', function() {
                 scope.title = $sce.trustAsHtml(args.title);
                 scope.t = args.type.substr(0,1);
                 scope.delay = args.delay;
+                scope.delegateRemove = args.delegateRemove;
 
                 var reposite = function() {
                     var j = 0;
@@ -98,7 +101,7 @@ angular.module('ui-notification').provider('Notification', function() {
                 templateElement.addClass(args.type);
                 templateElement.bind('webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd click', function(e){
                     e = e.originalEvent || e;
-                    if (e.type === 'click' || (e.propertyName === 'opacity' && e.elapsedTime >= 1)){
+                    if (!scope.delegateRemove && (e.type === 'click' || (e.propertyName === 'opacity' && e.elapsedTime >= 1))){
                         templateElement.remove();
                         messageElements.splice(messageElements.indexOf(templateElement), 1);
                         reposite();

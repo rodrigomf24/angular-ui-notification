@@ -78,7 +78,7 @@
                     </ul>
                 </div>
                 <div class="message">
-                    <a class="btn btn-small btn-primary close-notification" ng-click="nClick()">Click me</a>
+                    <a class="btn btn-small btn-primary close-notification" ng-click="kill(true)">Click me</a>
                 </div>
             </div>
         </script>
@@ -164,7 +164,7 @@
                 };
                 $scope.nElements = ['one', 'two', 'three'];
                 $scope.customTemplateScope = function() {
-                    Notification.primary({message: "Just message", templateUrl: "custom_template.html", scope: $scope});
+                    Notification.primary({delegateRemove:true, delay:false, message: "Just message", templateUrl: "custom_template.html", scope: $scope});
                 };
 
             });
